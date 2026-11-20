@@ -34,9 +34,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<ExceptionResponse> handleInvalidCredentials(InvalidCredentialsException e){
         ExceptionResponse response = new ExceptionResponse(HttpStatus.UNAUTHORIZED.value(), e.getMessage(), LocalDateTime.now());
-return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
-  @ExceptionHandler 
+
+    @ExceptionHandler
+    public ResponseEntity<ExceptionResponse> handleInsufficientBalance(InsufficientBalanceException e){
+        ExceptionResponse response = new ExceptionResponse(422, e.getMessage(), LocalDateTime.now());
+        return ResponseEntity.status(422).body(response);
+    }
+    @ExceptionHandler 
     public ResponseEntity<ExceptionResponse> handleValidation(MethodArgumentNotValidException e){
         String message = e.getBindingResult().getFieldError().getDefaultMessage();
         ExceptionResponse response = new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), message, LocalDateTime.now());
